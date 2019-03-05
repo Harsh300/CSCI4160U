@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PlayerInput : MonoBehaviour
 {
-
+    public Slider playerHealthSlider;
+    public int health = 100;
+    public int currentHealth;
 
     // Variables 
     public float runSpeed = 40f;
@@ -22,6 +24,7 @@ public class PlayerInput : MonoBehaviour
         // Get Componenents
         controller = GetComponent<PlayerController2D>();
         animator = GetComponent<Animator>();
+        currentHealth = health;
     }
 
     void Update()
@@ -42,7 +45,22 @@ public class PlayerInput : MonoBehaviour
         animator.SetBool("IsJumping", !controller.isGrounded);
 
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            //playerHealthSlider.value -= 10;
+            TakeDamagePlayer(10);
+            Debug.Log("Ouch!");
+        }
 
+    }
+    public void TakeDamagePlayer(int damage)
+    {
+        currentHealth = currentHealth - damage;
+        playerHealthSlider.value = currentHealth;
+
+    }
     void FixedUpdate()
     {
         // Move PLayer

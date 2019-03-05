@@ -5,9 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float speed = 5f;
-    public int damage = 1;
+    
     public Rigidbody2D rb;
- 
     void Start()
     {
         rb.velocity = transform.right * speed;  
@@ -15,9 +14,17 @@ public class Projectile : MonoBehaviour
     
 
 
-    private void onTriggerEnter2D(Collider2D colllider)
+    public void OnTriggerEnter2D(Collider2D hitInfo)
     {
-        debug.Log("Destroyed object");
-        Destroy(gameObject);
+       Debug.Log("Name: "+hitInfo.name);
+       Enemy enemy = hitInfo.GetComponent<Enemy>();
+        if (enemy != null)
+        {
+            enemy.TakeDamage(50);
+            Debug.Log("DAMAGE");
+            Destroy(gameObject);
+        }
+        Destroy(gameObject,1.8f);
+
     }
 }
